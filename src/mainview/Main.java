@@ -1,7 +1,8 @@
+package mainview;
 import java.sql.Date;
 
+import dao.KeyboardDAO;
 import dto.Keyboard;
-import dto.KeyboardDAO;
 
 public class Main {
 
