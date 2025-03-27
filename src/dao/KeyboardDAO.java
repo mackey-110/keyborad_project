@@ -2,7 +2,10 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dto.Keyboard;
 import util.DBConnector;
@@ -32,4 +35,31 @@ public class KeyboardDAO {
         }
     }
 
+	public List<Keyboard> getAllKeyboards() {
+        List<Keyboard> keyboards = new ArrayList<>();
+
+        String sql = "SELECT * FROM keyboard";
+
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Keyboard kb = new Keyboard(
+                    rs.getString("serial_number"),
+                    rs.getString("brand"),
+                    rs.getString("model"),
+                    rs.getDate("purchase_date"),
+                    rs.getString("status"),
+                    rs.getInt("user_id")
+                );
+                keyboards.add(kb);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return keyboards;
+    }
 }
